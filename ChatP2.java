@@ -1,7 +1,7 @@
 import java.net.InetAddress;
 import java.util.Scanner;
 
-public class ChatP {
+public class ChatP2 {
     
     public static void main (String[] args){
         String perro="";
@@ -13,17 +13,22 @@ public class ChatP {
                 int puertoReceptor = Integer.parseInt(args[1]);
                 int miPuerto = Integer.parseInt(args[2]);
                 MiSocketDatagrama miSocket = new MiSocketDatagrama(miPuerto);
-                while(!perro.equals("adios")){ 
+                while(true){ 
                     Scanner leer = new Scanner(System.in);
                     System.out.print("Tu:");
-					perro = leer.next();          
+                    perro = leer.next();          
                     String mensaje = perro;
-                    
                     miSocket.enviaMensaje(maquinaReceptora, puertoReceptor, mensaje);
+                    if (perro.equals("adios")){						                  
+                            miSocket.enviaMensaje(maquinaReceptora, puertoReceptor, mensaje);
+                            miSocket.close();  
+			    break;
+                        }
+                    String respuesta = miSocket.recibeMensaje();
                     System.out.print("Respuesta:");
-					System.out.println(miSocket.recibeMensaje());                                       
+                    System.out.println(respuesta); 
+                    
                 }
-                miSocket.close();
             }
 
             catch (Exception e){
@@ -32,3 +37,4 @@ public class ChatP {
         }        
     }
 }
+
